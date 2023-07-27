@@ -1,10 +1,6 @@
 $re = (IWR "https://pastebin.com/raw/MXcGBCqS")
 
-if ($re.StatusCode -eq 200) {
-    $tunnel = $re.Content
-}
-
-if ($tunnel -match 'hold') {
+if ($re -match 'hold') {
     Exit
 }
 
