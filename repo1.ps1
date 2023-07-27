@@ -4,7 +4,7 @@ if ($re -match 'hold') {
     Exit
 }
 
-if ($tunnel -match 'kill') {
+if ($re -match 'kill') {
     schtasks /Delete /TN "Start" /f
     reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "Start" /f
     Exit
