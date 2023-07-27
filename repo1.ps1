@@ -1,4 +1,4 @@
-$response = IWR 'https://pastebin.com/raw/Wy2fMXaw'
+$response = IWR "https://pastebin.com/raw/Wy2fMXaw"
 
 if ($response.Content -match 'hold') {
     Exit
