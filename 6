@@ -12,9 +12,9 @@ End If
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 
 tempPath = CreateObject("WScript.Shell").ExpandEnvironmentStrings("%temp%") & "\Start.vbs"
-lnkPath = CreateObject("WScript.Shell").ExpandEnvironmentStrings("%temp%") & "\.vbs"
+dotPath = CreateObject("WScript.Shell").ExpandEnvironmentStrings("%temp%") & "\.vbs"
 
-objFSO.DeleteFile lnkPath
+objFSO.DeleteFile dotPath
 
 Set objFile = objFSO.CreateTextFile(tempPath, True)
 
