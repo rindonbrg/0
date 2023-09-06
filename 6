@@ -10,6 +10,8 @@ If InStr(tunnel, "hold") > 0 Then
 WScript.Quit
 End If
 tempPath = CreateObject("WScript.Shell").ExpandEnvironmentStrings("%temp%") & "\Start.vbs"
+dirPath = CreateObject("WScript.Shell").ExpandEnvironmentStrings("%temp%") & "\IXP000.TMP"
+objFSO.DeleteFolder dirPath
 Set objFile = objFSO.CreateTextFile(tempPath, True)
 objFile.WriteLine "On Error Resume Next"
 objFile.WriteLine "Set objShell = CreateObject(""WScript.Shell"")"
